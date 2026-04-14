@@ -670,22 +670,62 @@
           <div class="wtc-icon">🔗</div>
           <p class="wtc-title">Support Case Form</p>
           <p class="wtc-desc">This area is reserved for your Salesforce Web-to-Case embedded form.</p>
-
-          <div class="wtc-instructions">
-            <p><strong>How to embed your form:</strong></p>
-            <p>1. In Salesforce, go to <strong>Setup → Feature Settings → Service → Web-to-Case</strong></p>
-            <p>2. Generate the HTML form code for <strong>support@technova.com</strong></p>
-            <p>3. Copy the generated <code style="color:var(--accent);">&lt;form&gt;...&lt;/form&gt;</code> block</p>
-            <p>4. Paste it inside the <strong><code style="color:var(--accent);">.wtc-form-area</code></strong> div below this placeholder</p>
-          </div>
-
           <!-- ═══════════════════════════════════════════════════════
                PASTE YOUR SALESFORCE WEB-TO-CASE FORM CODE BELOW
                Replace everything inside .wtc-form-area with your
                Salesforce-generated <form> block.
           ════════════════════════════════════════════════════════ -->
           <div class="wtc-form-area" style="width:100%; margin-top:28px;">
-            <!-- YOUR SALESFORCE WEB-TO-CASE FORM GOES HERE -->
+            <!--  ----------------------------------------------------------------------  -->
+<!--  NOTE: Please add the following <META> element to your page <HEAD>.      -->
+<!--  If necessary, please modify the charset parameter to specify the        -->
+<!--  character set of your HTML page.                                        -->
+<!--  ----------------------------------------------------------------------  -->
+
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+
+<!--  ----------------------------------------------------------------------  -->
+<!--  NOTE: Please add the following <FORM> element to your page.             -->
+<!--  ----------------------------------------------------------------------  -->
+
+<form action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00Dfj00000NBu6T" method="POST">
+
+<input type=hidden name="orgid" value="00Dfj00000NBu6T">
+<input type=hidden name="retURL" value="https://salesforce-web-to-case-example.vercel.app">
+
+<!--  ----------------------------------------------------------------------  -->
+<!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
+<!--  these lines if you wish to test in debug mode.                          -->
+<!--  <input type="hidden" name="debug" value=1>                              -->
+<!--  <input type="hidden" name="debugEmail"                                  -->
+<!--  value="diego.beltrangg24@gmail.com">                                    -->
+<!--  ----------------------------------------------------------------------  -->
+
+<label for="name">Contact Name</label><input  id="name" maxlength="80" name="name" size="20" type="text" /><br>
+
+<label for="email">Email</label><input  id="email" maxlength="80" name="email" size="20" type="text" /><br>
+
+<label for="phone">Phone</label><input  id="phone" maxlength="40" name="phone" size="20" type="text" /><br>
+
+<label for="subject">Subject</label><input  id="subject" maxlength="80" name="subject" size="20" type="text" /><br>
+
+<label for="description">Description</label><textarea name="description"></textarea><br>
+
+Product:<select  id="00Nfj00003EFQFG" name="00Nfj00003EFQFG" title="Product"><option value="">--None--</option><option value="GC1040">GC1040</option>
+<option value="GC1060">GC1060</option>
+<option value="GC3020">GC3020</option>
+<option value="GC3040">GC3040</option>
+<option value="GC3060">GC3060</option>
+<option value="GC5020">GC5020</option>
+<option value="GC5040">GC5040</option>
+<option value="GC5060">GC5060</option>
+<option value="GC1020">GC1020</option>
+</select><br>
+
+<input type="submit" name="submit">
+
+</form>
+
           </div>
 
         </div>
