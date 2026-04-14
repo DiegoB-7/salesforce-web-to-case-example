@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechNova — Intelligent Infrastructure for Modern Teams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #05080f;
+      --surface:   #0c1220;
+      --border:    #1c2a40;
+      --accent:    #00d4ff;
+      --accent2:   #7b5cff;
+      --gold:      #f0b429;
+      --text:      #e8edf5;
+      --muted:     #6b7fa3;
+      --radius:    12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 68px;
+      background: rgba(5,8,15,.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    nav ul {
+      display: flex; gap: 32px; list-style: none;
+    }
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 400;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #000 !important;
+      padding: 9px 22px;
+      border-radius: 100px;
+      font-weight: 500 !important;
+      transition: opacity .2s !important;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
+
+    /* mesh blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,212,255,.18) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      animation: drift1 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(123,92,255,.15) 0%, transparent 70%);
+      bottom: 0; right: -80px;
+      animation: drift2 15s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { to { transform: translate(60px, 80px); } }
+    @keyframes drift2 { to { transform: translate(-60px, -60px); } }
+
+    .hero-eyebrow {
+      font-size: .8rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      max-width: 820px;
+      margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: .95rem;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 0 32px rgba(0,212,255,.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 48px rgba(0,212,255,.45);
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: .95rem;
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--muted); background: rgba(255,255,255,.03); }
+
+    /* ── LOGOS ── */
+    .logos-strip {
+      padding: 40px 48px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .logos-strip p { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+    .logos-row {
+      display: flex; gap: 48px; align-items: center; justify-content: center; flex-wrap: wrap;
+    }
+    .logo-pill {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--muted);
+      letter-spacing: -.01em;
+      opacity: .55;
+    }
+
+    /* ── FEATURES ── */
+    section { padding: 96px 48px; max-width: 1160px; margin: 0 auto; }
+
+    .section-label {
+      font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px; font-weight: 500;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 520px;
+      font-weight: 300;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: border-color .25s, transform .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,212,255,.04), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .feature-card:hover { border-color: rgba(0,212,255,.35); transform: translateY(-4px); }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 10px; letter-spacing: -.01em;
+    }
+    .feature-card p { font-size: .88rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+    /* ── PLANS ── */
+    .plans-section { background: rgba(12,18,32,.6); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .plans-section > div { max-width: 1160px; margin: 0 auto; padding: 96px 48px; }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      position: relative;
+      transition: transform .25s;
+    }
+    .plan-card:hover { transform: translateY(-4px); }
+    .plan-card.featured {
+      border-color: var(--accent);
+      box-shadow: 0 0 40px rgba(0,212,255,.15);
+    }
+
+    .plan-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent);
+      color: #000;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 100px;
+    }
+
+    .plan-tier {
+      font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px; font-weight: 500;
+    }
+    .plan-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.6rem; font-weight: 800;
+      letter-spacing: -.04em; margin-bottom: 4px;
+    }
+    .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .plan-desc { font-size: .88rem; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+
+    .plan-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 24px; }
+
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .plan-features li {
+      font-size: .88rem; color: var(--muted); display: flex; align-items: center; gap: 10px;
+    }
+    .plan-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .plan-btn {
+      display: block; text-align: center;
+      padding: 13px 24px; border-radius: 100px;
+      font-weight: 600; font-size: .9rem;
+      text-decoration: none; transition: .2s;
+    }
+    .plan-btn-outline {
+      border: 1px solid var(--border); color: var(--text);
+    }
+    .plan-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .plan-btn-fill {
+      background: var(--accent); color: #000;
+      box-shadow: 0 0 24px rgba(0,212,255,.25);
+    }
+    .plan-btn-fill:hover { opacity: .88; }
+
+    /* ── CONTACT / WEB-TO-CASE ── */
+    .contact-section { padding: 96px 48px; max-width: 1160px; margin: 0 auto; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-top: 56px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+    .contact-info p {
+      color: var(--muted); font-size: .95rem; line-height: 1.7; font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    .contact-channel {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 20px;
+    }
+    .channel-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .channel-label { font-size: .8rem; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: .08em; }
+    .channel-value { font-size: .95rem; font-weight: 500; }
+
+    /* ── WEB-TO-CASE PLACEHOLDER ── */
+    .wtc-container {
+      background: var(--surface);
+      border: 2px dashed var(--accent);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .wtc-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--bg);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 5px 18px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .wtc-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      opacity: .6;
+    }
+
+    .wtc-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 10px; color: var(--accent);
+    }
+    .wtc-desc {
+      font-size: .88rem; color: var(--muted);
+      line-height: 1.65; margin-bottom: 28px; max-width: 320px;
+    }
+
+    .wtc-instructions {
+      background: rgba(0,212,255,.06);
+      border: 1px solid rgba(0,212,255,.2);
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: left;
+      width: 100%;
+      max-width: 380px;
+    }
+    .wtc-instructions p {
+      font-size: .8rem; color: var(--muted); line-height: 1.6; margin-bottom: 10px;
+    }
+    .wtc-instructions p:last-child { margin-bottom: 0; }
+    .wtc-instructions strong { color: var(--accent); font-weight: 600; }
+
+    /* PASTE YOUR WEB-TO-CASE FORM HERE */
+    /* The <form> tag from Salesforce Web-to-Case goes inside .wtc-form-area */
+    .wtc-form-area {
+      width: 100%;
+      /* Remove this placeholder styling once you paste the Salesforce form */
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    footer .logo { font-size: 1.1rem; }
+    footer p { font-size: .82rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: .82rem; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* Tier indicator dots */
+    .tier-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .dot-basic    { background: #4ade80; }
+    .dot-premium  { background: var(--accent); }
+    .dot-enterprise { background: var(--gold); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      nav ul { display: none; }
+      section { padding: 64px 24px; }
+      .features-grid, .plans-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a href="#" class="logo">Tech<span>Nova</span></a>
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#plans">Plans</a></li>
+      <li><a href="#support">Support</a></li>
+      <li><a href="#contact" class="nav-cta">Get Support</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <p class="hero-eyebrow">Intelligent Infrastructure Platform</p>
+    <h1>The OS for your <em>modern team's</em> growth</h1>
+    <p>TechNova unifies monitoring, automation, and collaboration into one adaptive platform — built for teams moving at the speed of now.</p>
+    <div class="hero-actions">
+      <a href="#plans" class="btn-primary">Start free trial</a>
+      <a href="#features" class="btn-ghost">See how it works</a>
+    </div>
+  </div>
+
+  <!-- ── TRUST LOGOS ── -->
+  <div class="logos-strip">
+    <p>Trusted by 4,200+ companies worldwide</p>
+    <div class="logos-row">
+      <span class="logo-pill">Axiom Labs</span>
+      <span class="logo-pill">Stratum AI</span>
+      <span class="logo-pill">Meridian Cloud</span>
+      <span class="logo-pill">Vortex Systems</span>
+      <span class="logo-pill">NorthBay Capital</span>
+      <span class="logo-pill">Orbis SaaS</span>
+    </div>
+  </div>
+
+  <!-- ── FEATURES ── -->
+  <section id="features">
+    <p class="section-label">Platform Capabilities</p>
+    <h2 class="section-title">Everything your team needs,<br>nothing it doesn't</h2>
+    <p class="section-sub">From real-time monitoring to AI-driven automation, TechNova removes the friction between insight and action.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(0,212,255,.1);">📡</div>
+        <h3>Real-Time Monitoring</h3>
+        <p>Sub-second alerting across all your infrastructure. Catch anomalies before they become outages with adaptive thresholds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(123,92,255,.1);">⚙️</div>
+        <h3>Workflow Automation</h3>
+        <p>Visual pipeline builder with 200+ integrations. Automate repetitive ops and let your team focus on what matters.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(240,180,41,.1);">🔐</div>
+        <h3>Enterprise Security</h3>
+        <p>SOC 2 Type II certified. Role-based access, audit trails, SSO, and end-to-end encryption out of the box.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,222,128,.1);">📊</div>
+        <h3>Unified Analytics</h3>
+        <p>Drag-and-drop dashboards pulling from every data source. Share live reports with stakeholders in one click.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(0,212,255,.1);">🤝</div>
+        <h3>Team Collaboration</h3>
+        <p>Incident rooms, runbooks, and shared playbooks. Keep every responder aligned from alert to resolution.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(123,92,255,.1);">🧠</div>
+        <h3>AI Recommendations</h3>
+        <p>Machine learning surfaces root-cause analysis and capacity forecasts so you act with confidence, not guesswork.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PLANS ── -->
+  <div class="plans-section" id="plans">
+    <div>
+      <p class="section-label">Pricing</p>
+      <h2 class="section-title">Simple, transparent plans</h2>
+      <p class="section-sub">Scale your support tier as your team grows. Every plan includes a 14-day free trial — no credit card required.</p>
+
+      <div class="plans-grid">
+        <!-- BASIC -->
+        <div class="plan-card">
+          <p class="plan-tier"><span class="tier-dot dot-basic"></span>Basic</p>
+          <p class="plan-price">$29<span>/mo</span></p>
+          <p class="plan-desc">Perfect for small teams getting started with smart infrastructure management.</p>
+          <hr class="plan-divider">
+          <ul class="plan-features">
+            <li>Up to 5 team members</li>
+            <li>10 monitors included</li>
+            <li>Standard email support</li>
+            <li>48-hour response SLA</li>
+            <li>Community knowledge base</li>
+          </ul>
+          <a href="#contact" class="plan-btn plan-btn-outline">Get started</a>
+        </div>
+
+        <!-- PREMIUM -->
+        <div class="plan-card featured">
+          <div class="plan-badge">Most Popular</div>
+          <p class="plan-tier"><span class="tier-dot dot-premium"></span>Premium</p>
+          <p class="plan-price">$99<span>/mo</span></p>
+          <p class="plan-desc">Advanced tooling and priority support for growing engineering teams.</p>
+          <hr class="plan-divider">
+          <ul class="plan-features">
+            <li>Up to 25 team members</li>
+            <li>100 monitors included</li>
+            <li>Priority support queue</li>
+            <li>4-hour response SLA</li>
+            <li>Dedicated success manager</li>
+            <li>AI-powered recommendations</li>
+          </ul>
+          <a href="#contact" class="plan-btn plan-btn-fill">Get started</a>
+        </div>
+
+        <!-- ENTERPRISE -->
+        <div class="plan-card">
+          <p class="plan-tier"><span class="tier-dot dot-enterprise"></span>Enterprise</p>
+          <p class="plan-price">Custom<span></span></p>
+          <p class="plan-desc">Unlimited scale, white-glove onboarding, and mission-critical SLAs for large orgs.</p>
+          <hr class="plan-divider">
+          <ul class="plan-features">
+            <li>Unlimited team members</li>
+            <li>Unlimited monitors</li>
+            <li>Enterprise support queue</li>
+            <li>2-hour escalation SLA</li>
+            <li>Custom contract & invoicing</li>
+            <li>On-prem deployment option</li>
+            <li>24/7 dedicated hotline</li>
+          </ul>
+          <a href="#contact" class="plan-btn plan-btn-outline">Contact sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTACT / WEB-TO-CASE ── -->
+  <div class="contact-section" id="contact">
+    <p class="section-label">Support</p>
+    <h2 class="section-title">We're here when you need us</h2>
+    <p class="section-sub">Reach out via email or submit a case directly below. Our team routes every request based on your plan tier.</p>
+
+    <div class="contact-grid">
+      <!-- LEFT: info -->
+      <div class="contact-info">
+        <h3>Multiple ways to get help</h3>
+        <p>Every support request is automatically routed to the correct queue — Basic, Premium, or Enterprise — so the right person picks it up fast.</p>
+
+        <div class="contact-channel">
+          <div class="channel-icon">✉️</div>
+          <div>
+            <p class="channel-label">Email Support</p>
+            <p class="channel-value">support@technova.com</p>
+          </div>
+        </div>
+
+        <div class="contact-channel">
+          <div class="channel-icon">📋</div>
+          <div>
+            <p class="channel-label">Submit a Case</p>
+            <p class="channel-value">Use the form on this page</p>
+          </div>
+        </div>
+
+        <div class="contact-channel">
+          <div class="channel-icon">⏱️</div>
+          <div>
+            <p class="channel-label">Response SLAs</p>
+            <p class="channel-value">Basic 48h · Premium 4h · Enterprise 2h</p>
+          </div>
+        </div>
+
+        <div style="margin-top:32px; padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);">
+          <p style="font-size:.82rem; color:var(--muted); line-height:1.7;">
+            <strong style="color:var(--text); display:block; margin-bottom:6px;">How routing works</strong>
+            When you submit, Salesforce reads your <em>customer tier</em> and <em>case priority</em> fields and assigns the case to the correct queue automatically. Premium and Enterprise cases trigger escalation rules if untouched within their SLA window.
+          </p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Web-to-Case Placeholder -->
+      <div>
+        <div class="wtc-container" id="support">
+          <div class="wtc-badge">📋 Salesforce Web-to-Case — Paste Form Here</div>
+
+          <div class="wtc-icon">🔗</div>
+          <p class="wtc-title">Support Case Form</p>
+          <p class="wtc-desc">This area is reserved for your Salesforce Web-to-Case embedded form.</p>
+
+          <div class="wtc-instructions">
+            <p><strong>How to embed your form:</strong></p>
+            <p>1. In Salesforce, go to <strong>Setup → Feature Settings → Service → Web-to-Case</strong></p>
+            <p>2. Generate the HTML form code for <strong>support@technova.com</strong></p>
+            <p>3. Copy the generated <code style="color:var(--accent);">&lt;form&gt;...&lt;/form&gt;</code> block</p>
+            <p>4. Paste it inside the <strong><code style="color:var(--accent);">.wtc-form-area</code></strong> div below this placeholder</p>
+          </div>
+
+          <!-- ═══════════════════════════════════════════════════════
+               PASTE YOUR SALESFORCE WEB-TO-CASE FORM CODE BELOW
+               Replace everything inside .wtc-form-area with your
+               Salesforce-generated <form> block.
+          ════════════════════════════════════════════════════════ -->
+          <div class="wtc-form-area" style="width:100%; margin-top:28px;">
+            <!-- YOUR SALESFORCE WEB-TO-CASE FORM GOES HERE -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <a href="#" class="logo">Tech<span>Nova</span></a>
+    <p>© 2026 TechNova, Inc. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Status</a>
+      <a href="#">Docs</a>
+    </div>
+  </footer>
+
+</body>
+</html>
